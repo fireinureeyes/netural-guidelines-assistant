@@ -1,17 +1,17 @@
 {
-  "name": "sketch-assistant-template",
-  "homepage": "https://github.com/sketch-hq/sketch-assistant-template",
+  "name": "netural-guidelines-assistant",
+  "homepage": "https://github.com/fireinureeyes/netural-guidelines-assistant",
   "version": "1.0.0",
   "main": "dist/index.js",
   "sketch": "dist/sketch.js",
   "license": "MIT",
   "sketch-assistant": {
-    "title": "Sketch Assistant Template",
-    "description": "Template repository for a starter Assistant project",
-    "icon": ""
+    "title": "Netural Guidelines Assistant",
+    "description": "Repositiory containing a Sketch Assistant observing the guidelines defined by Netural UX team",
+    "icon": "https://www.netural.com/images/favicon-96x96.png"
   },
   "author": {
-    "name": "Your Name or Company Name"
+    "name": "Netural"
   },
   "keywords": [
     "sketch",
@@ -44,6 +44,7 @@
     "webpack-cli": "3.3.12"
   },
   "dependencies": {
-    "@sketch-hq/sketch-assistant-types": "6.0.0"
+    "@sketch-hq/sketch-assistant-types": "6.0.0",
+    "@sketch-hq/sketch-core-assistant": "^6.1.0"
   }
 }

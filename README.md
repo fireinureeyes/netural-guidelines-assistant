@@ -1,16 +1,11 @@
-# sketch-assistant-template
+# netural-guidelines-assistant
 
-> 💁‍♀️ This repository contains a starter project for developing a new Assistant.
+![alt text](https://www.netural.com/images/favicon-96x96.png)
 
-👉
-[Click here to generate a new project using this repository as a template](https://github.com/sketch-hq/sketch-assistant-template/generate)
+> 💁‍♀️ This repository contains a Sketch Assistant observing the guidelines defined by Netural UX team
 
-## Getting started
+👉 Click here to open the Confluence page containing the current
+[guideline definitions](https://netural.atlassian.net/wiki/spaces/UX/pages/1419608224/Sketch+File+Aufbau+-+Guidlines)
 
-For in-depth guides head over to the [Sketch Developer](https://developer.sketch.com/assistants/)
-site.
-
-- [Getting started](https://developer.sketch.com/assistants/getting-started)
-- [Write a rule](https://developer.sketch.com/assistants/write-a-rule)
-- [Publishing](https://developer.sketch.com/assistants/publish)
-- And more!
+👉 If you want, you can also see the current master template sketch file on
+[Plant](https://projects.plantapp.io/p/42589)
