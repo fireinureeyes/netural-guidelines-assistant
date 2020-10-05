@@ -7,7 +7,7 @@
   "license": "MIT",
   "sketch-assistant": {
     "title": "Netural Guidelines Assistant",
-    "description": "Repositiory containing a Sketch Assistant observing the guidelines defined by Netural UX team",
+    "description": "A Sketch Assistant observing the guidelines defined by Netural UX team",
     "icon": "https://www.netural.com/images/favicon-96x96.png"
   },
   "author": {
@@ -44,7 +44,8 @@
     "webpack-cli": "3.3.12"
   },
   "dependencies": {
-    "@sketch-hq/sketch-assistant-types": "6.0.0",
-    "@sketch-hq/sketch-core-assistant": "^6.1.0"
+    "@sketch-hq/sketch-assistant-types": "^6.0.0",
+    "@sketch-hq/sketch-core-assistant": "^6.1.0",
+    "@sketch-hq/sketch-file-format": "^3.6.7"
   }
 }
