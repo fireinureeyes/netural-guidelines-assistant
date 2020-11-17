@@ -1,0 +1,124 @@
+{
+  "properties": [
+    {
+      "value": "rgb(1,1,1)",
+      "type": "color",
+      "category": "background-color"
+    },
+    {
+      "value": "rgba(2,2,2,0.75)",
+      "type": "color",
+      "category": "background-color"
+    },
+    {
+      "value": "rgb(3,3,3)",
+      "type": "color",
+      "category": "border-color"
+    },
+    {
+      "value": "rgb(4,4,4)",
+      "type": "color",
+      "category": "text-color"
+    },
+    {
+      "value": "rgba(5,5,5,1)",
+      "type": "color",
+      "category": "text-color"
+    },
+    {
+      "value": "rgba(6,6,6,0.25)",
+      "type": "color",
+      "category": "color"
+    },
+    {
+      "value": "rgb(7,7,7)",
+      "type": "color",
+      "category": "color"
+    },
+    {
+      "value": "1",
+      "type": "opacity",
+      "category": "opacity"
+    },
+    {
+      "value": "2",
+      "type": "size",
+      "category": "radius"
+    },
+    {
+      "value": "1",
+      "type": "size",
+      "category": "border-style"
+    },
+    {
+      "value": "2",
+      "type": "size",
+      "category": "border-style"
+    },
+    {
+      "value": "0 2 4 0 0 rgba(0,0,0,0.40)",
+      "type": "box-shadow",
+      "category": "shadow"
+    },
+    {
+      "value": "0 2 4 0 0 rgba(0,0,0,0.50)",
+      "type": "box-shadow",
+      "category": "shadow"
+    },
+    {
+      "value": "0 3 4 0 0 rgba(0,0,0,0.40)",
+      "type": "box-shadow",
+      "category": "shadow"
+    },
+    {
+      "value": "0.05s",
+      "type": "time",
+      "category": "time"
+    },
+    {
+      "value": "Poppins-Regular",
+      "type": "font",
+      "category": "font"
+    },
+    {
+      "value": "10",
+      "type": "font-size",
+      "category": "font-size"
+    },
+    {
+      "value": "300",
+      "type": "font-weight",
+      "category": "font"
+    },
+    {
+      "value": "14",
+      "type": "number",
+      "category": "line-height"
+    },
+    {
+      "value": "192",
+      "type": "size",
+      "category": "sizing"
+    },
+    {
+      "value": "48",
+      "type": "size",
+      "category": "sizing"
+    },
+    {
+      "value": "44",
+      "type": "size",
+      "category": "touch"
+    },
+    {
+      "value": "1",
+      "type": "z-index",
+      "category": "z-index"
+    },
+    {
+      "value": "-99999",
+      "type": "z-index",
+      "category": "z-index"
+    }
+  ]
+}
