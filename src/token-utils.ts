@@ -45,14 +45,6 @@ primitiveTokens.properties
   .filter((p) => p.category === 'font' && p.type === 'font')
   .map((p) => p.value)
 
-/*
-//returns an array of allowed font weights from json file, currently included in the previous getFontFamilies
-export const getFontWeights = () =>
-primitiveTokens.properties
-  .filter((p) => p.category === 'font' && p.type === 'font-weight')
-  .map((p) => p.value)
-*/
-
 //returns an array of allowed line heights from json file
 export const getLineHeights = () =>
 primitiveTokens.properties

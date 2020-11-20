@@ -2,11 +2,22 @@ import CoreAssistant from '@sketch-hq/sketch-core-assistant'
 import { AssistantPackage, RuleDefinition, RuleUtils } from '@sketch-hq/sketch-assistant-types'
 import _ from 'lodash'
 
-import { getBackgroundColors, getBorderColors, getTextColors, getFontSizes, getBorderSizes, getFontFamilies, getLineHeights, getShadows, getOpacities, getRadiuses } from './token-utils'
+import {
+  getBackgroundColors,
+  getBorderColors,
+  getTextColors,
+  getFontSizes,
+  getBorderSizes,
+  getFontFamilies,
+  getLineHeights,
+  getShadows,
+  getOpacities,
+  getRadiuses,
+} from './token-utils'
 import { strict } from 'assert'
 
-const RELEASE = "Release 0.1"
-const desc = `Description`
+//reserved for design system versioning
+const RELEASE = ''
 
 // parse rgba syntax and populate array
 const parseColors = (rawTokens: Array<string>) =>
@@ -26,12 +37,10 @@ const parseColors = (rawTokens: Array<string>) =>
 
 // parse shadow syntax and populate array
 const parseShadows = (rawTokens: Array<string>) =>
-rawTokens.map((key: string) => {
-  let split = key.split(' ').map((attr: string) =>
-    attr
-  )
-  return split
-})
+  rawTokens.map((key: string) => {
+    let split = key.split(' ').map((attr: string) => attr)
+    return split
+  })
 
 // turn rgba percentages into values
 const getRgba = (colorObj: any) => {
@@ -43,81 +52,87 @@ const getRgba = (colorObj: any) => {
   ]
 }
 
+// global variables to make reporting hints with actual values possible
+const fontFamilyValues = getFontFamilies()
+const fontLineHeightValues = getLineHeights()
+const fontSizeValues = getFontSizes()
+const borderColorValues = getBorderColors()
+const borderSizeValues = getBorderSizes()
+const backgroundColorValues = getBackgroundColors()
+const shadowValues = getShadows()
+const opacityValues = getOpacities()
+const radiusValues = getRadiuses()
+const textColorValues = getTextColors()
+
 // given sketch layer, return true if this layer should be linted
 const isValidLayer = (layer: any, _utils: RuleUtils) => {
-  return (
-    layer._class !== 'group' &&
-    layer._class !== 'page' &&
-    layer._class !== 'artboard' 
-  )
+  return layer._class !== 'group' && layer._class !== 'page' && layer._class !== 'artboard'
 }
 
 const textFont: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const fontFamilies = getFontFamilies()
 
     for (const layer of utils.objects.text) {
-      const fontName = layer.style?.textStyle?.encodedAttributes?.MSAttributedStringFontAttribute?.attributes?.name
+      const fontName =
+        layer.style?.textStyle?.encodedAttributes?.MSAttributedStringFontAttribute?.attributes?.name
       if (typeof fontName !== 'string') throw Error()
 
-      if (
-        !fontFamilies.includes(fontName)
-      )
-        utils.report(
-          `${fontName} does not match a valid font name token.`,
-          layer,
-        )
+      if (!fontFamilyValues.includes(fontName))
+        utils.report(`'${fontName}' does not match a valid font name token`, layer)
     }
   },
   name: 'ds/font',
-  title: `Fonts should match the token font families.`,
-  description: desc,
+  title: `Fonts used should match the defined token values`,
+  description: `Reports a violation if a font is different than: \r\n${fontFamilyValues.join(
+    '\r\n',
+  )}`,
 }
 
 const textLineHeight: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const fontLineHeights = getLineHeights()
 
     for (const layer of utils.objects.text) {
-      const fontLineHeight = layer.style?.textStyle?.encodedAttributes.paragraphStyle?.minimumLineHeight
+      const fontLineHeight =
+        layer.style?.textStyle?.encodedAttributes.paragraphStyle?.minimumLineHeight
 
       if (fontLineHeight)
-        if (!fontLineHeights.find((v) => parseInt(v) === fontLineHeight))
-       
-        utils.report(
-          `${fontLineHeight?.toString()} does not match a valid font line height token.`,
-          layer,)
-      
+        if (!fontLineHeightValues.find((v) => parseInt(v) === fontLineHeight))
+          utils.report(
+            `${fontLineHeight?.toString()} does not match a valid font line height token`,
+            layer,
+          )
     }
   },
   name: 'ds/lineheight',
-  title: `Fonts should match the token font line height.`,
-  description: desc,
+  title: `Text line height should match the defined token values`,
+  description: `Reports a violation if a line height is different than: \r\n${fontLineHeightValues.join(
+    '\r\n',
+  )}`,
 }
 
 const textSize: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const fontSizeValues = getFontSizes()
 
     for (const layer of utils.objects.text) {
       const size =
         layer.style?.textStyle?.encodedAttributes?.MSAttributedStringFontAttribute?.attributes?.size
       if (isValidLayer(layer, utils) && !fontSizeValues.find((v) => parseInt(v) === size))
-        utils.report(`${size} does not match a valid font size token.`, layer)
-      }
+        utils.report(`${size} does not match a valid font size token`, layer)
+    }
   },
   name: 'ds/text-size',
-  title: `Text sizes should match font size token values. (${RELEASE})`,
-  description: desc,
+  title: `Font sizes should match the defined token values ${RELEASE}`,
+  description: `Reports a violation if a font size is different than: \r\n${fontSizeValues.join(
+    '\r\n',
+  )}`,
 }
 
 const borderColor: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const borderColorValues = parseColors(getBorderColors())
 
     for (const layer of utils.objects.anyLayer) {
       const borders = layer.style?.borders
@@ -130,10 +145,10 @@ const borderColor: RuleDefinition = {
           if (
             border.isEnabled &&
             borderRgba[3] !== 0 &&
-            !borderColorValues.find((v) => _.isEqual(v, borderRgba))
+            !parseColors(borderColorValues).find((v) => _.isEqual(v, borderRgba))
           )
             utils.report(
-              `rgba(${borderRgba[0]},${borderRgba[1]},${borderRgba[2]},${borderRgba[3]}) does not match a valid border or generic color token.`,
+              `rgba(${borderRgba}) does not match a valid border or generic color token`,
               layer,
             )
         })
@@ -141,14 +156,15 @@ const borderColor: RuleDefinition = {
     }
   },
   name: 'ds/border-color',
-  title: `Border colors should match border or generic color token values. (${RELEASE})`,
-  description: desc,
+  title: `Border colors should match border or generic color token values ${RELEASE}`,
+  description: `Reports a violation if a border color is different than: \r\n${borderColorValues.join(
+    '\r\n',
+  )}`,
 }
 
 const borderSize: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const borderSizeValues = getBorderSizes()
 
     for (const layer of utils.objects.anyLayer) {
       const borders = layer.style?.borders
@@ -158,28 +174,22 @@ const borderSize: RuleDefinition = {
           const borderPx = border.thickness
 
           // Border must be enabled. Transparent borders are allowed.
-          if (
-            border.isEnabled &&
-            !borderSizeValues.includes(borderPx.toString())
-          )
-            utils.report(
-              `${borderPx} does not match a valid border size token.`,
-              layer,
-            )
+          if (border.isEnabled && !borderSizeValues.includes(borderPx.toString()))
+            utils.report(`${borderPx} does not match a valid border size token`, layer)
         })
       }
     }
   },
   name: 'ds/border-size',
-  title: `Border sizes should match border token values. (${RELEASE})`,
-  description: desc,
+  title: `Border sizes should match the defined token values ${RELEASE}`,
+  description: `Reports a violation if a border size is different than: \r\n${borderSizeValues.join(
+    '\r\n',
+  )}`,
 }
 
 const fillColor: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-
-    const backgroundColorValues = parseColors(getBackgroundColors())
 
     for (const layer of utils.objects.anyLayer) {
       const fills = layer.style?.fills
@@ -192,10 +202,10 @@ const fillColor: RuleDefinition = {
           if (
             fill.isEnabled &&
             fillRgba[3] !== 0 &&
-            !backgroundColorValues.find((v) => _.isEqual(v, fillRgba))
+            !parseColors(backgroundColorValues).find((v) => _.isEqual(v, fillRgba))
           )
             utils.report(
-              `rgba(${fillRgba[0]},${fillRgba[1]},${fillRgba[2]},${fillRgba[3]}) does not match a valid background or generic color token.`,
+              `rgba(${fillRgba}) does not match a valid background or generic color token`,
               layer,
             )
         })
@@ -203,69 +213,74 @@ const fillColor: RuleDefinition = {
     }
   },
   name: 'ds/fill-color',
-  title: `Fill colors should match background or generic color token values. (${RELEASE})`,
-  description: desc,
+  title: `Fill colors should match background or generic color token values ${RELEASE}`,
+  description: `Reports a violation if a fill color is different than: \r\n${backgroundColorValues.join(
+    '\r\n',
+  )}`,
 }
 
 const shadow: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const allowedShadows = parseShadows(getShadows())
-    
+
     for (const layer of utils.objects.anyLayer) {
       const appliedShadows = layer.style?.shadows
-      
+
       if (isValidLayer(layer, utils) && appliedShadows && appliedShadows.length > 0) {
         appliedShadows.forEach((shadow) => {
           if (shadow.isEnabled) {
             let isAllowed = false
-          allowedShadows.forEach((allowedShadow) => {
-            const colours: string[] = []
-            colours.push(allowedShadow[5])
-            if (
-            allowedShadow[0] == shadow.offsetX.toString() &&
-            allowedShadow[1] == shadow.offsetY.toString() &&
-            allowedShadow[2] == shadow.blurRadius.toString() &&
-            allowedShadow[3] == shadow.spread.toString() &&
-            allowedShadow[4] == shadow.contextSettings.blendMode.toString() &&
-            parseColors(colours).find((v) => _.isEqual(v, getRgba(shadow.color)))
-            )
-            isAllowed = true
-          })
-          if (isAllowed == false)
-          utils.report(
-            `Does not match any defined token`,
-            layer,
-          )
+            parseShadows(shadowValues).forEach((allowedShadow) => {
+              const colours: string[] = []
+              colours.push(allowedShadow[5])
+              if (
+                allowedShadow[0] == shadow.offsetX.toString() &&
+                allowedShadow[1] == shadow.offsetY.toString() &&
+                allowedShadow[2] == shadow.blurRadius.toString() &&
+                allowedShadow[3] == shadow.spread.toString() &&
+                allowedShadow[4] == shadow.contextSettings.blendMode.toString() &&
+                parseColors(colours).find((v) => _.isEqual(v, getRgba(shadow.color)))
+              )
+                isAllowed = true
+            })
+            if (isAllowed == false)
+              utils.report(
+                `${shadow.offsetX.toString()} ${shadow.offsetY.toString()} ${shadow.blurRadius.toString()} ${shadow.spread.toString()} ${shadow.contextSettings.blendMode.toString()} rgba(${getRgba(
+                  shadow.color,
+                )}) does not match any defined token`,
+                layer,
+              )
           }
         })
       }
     }
   },
   name: 'ds/shadow',
-  title: `Shadows should match defined token values. (${RELEASE})`,
-  description: desc,
+  title: `Shadows should match defined token values ${RELEASE}`,
+  description: `Reports a violation if a shadow is different than: \r\n${shadowValues.join(
+    '\r\n',
+  )}`,
 }
 
 const opacity: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const opacities = getOpacities()
 
     for (const layer of utils.objects.anyLayer) {
       const objectOpacity = layer.style?.contextSettings?.opacity
-        if (
-          !(objectOpacity == null) && 
-          !(objectOpacity == undefined) && 
-          isValidLayer(layer, utils) && 
-          opacities && 
-          opacities.length > 0) 
-          {
-
-          for (const opacity of opacities) {
-            if (parseFloat(opacity) !== Math.round((objectOpacity + Number.EPSILON) * 100) / 100)
+      if (
+        !(objectOpacity == null) &&
+        !(objectOpacity == undefined) &&
+        isValidLayer(layer, utils) &&
+        opacityValues &&
+        opacityValues.length > 0
+      ) {
+        for (const opacity of opacityValues) {
+          if (parseFloat(opacity) !== Math.round((objectOpacity + Number.EPSILON) * 100) / 100)
             utils.report(
-              `${Math.round((objectOpacity + Number.EPSILON) * 100) / 100} Does not match a valid opacity token value.`,
+              `${
+                Math.round((objectOpacity + Number.EPSILON) * 100) / 100
+              } Does not match a valid opacity token value`,
               layer,
             )
         }
@@ -273,27 +288,31 @@ const opacity: RuleDefinition = {
     }
   },
   name: 'ds/opacity',
-  title: `Opacities should match defined token values. (${RELEASE})`,
-  description: desc,
+  title: `Opacities should match defined token values ${RELEASE}`,
+  description: `Reports a violation if an opacity is different than: \r\n${opacityValues.join(
+    '\r\n',
+  )}`,
 }
 
 const radius: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const radiuses = getRadiuses()
 
     for (const layer of utils.objects.anyLayer) {
       if (
-        layer._class === 'triangle' || 
-        layer._class === 'star' || 
-        layer._class === 'shapePath' ||  
-        layer._class === 'rectangle' || 
-        layer._class === 'polygon') 
-        {
-          for (const point of layer.points) {
-            if (point.curveMode == 1 && !radiuses.find((v) => _.isEqual(v, point.cornerRadius.toString()))) {
+        layer._class === 'triangle' ||
+        layer._class === 'star' ||
+        layer._class === 'shapePath' ||
+        layer._class === 'rectangle' ||
+        layer._class === 'polygon'
+      ) {
+        for (const point of layer.points) {
+          if (
+            point.curveMode == 1 &&
+            !radiusValues.find((v) => _.isEqual(v, point.cornerRadius.toString()))
+          ) {
             utils.report(
-              `${layer.points.length} One or more path points does not match a valid radius token value.`,
+              `${layer.points.length} One or more path points does not match a valid radius token value`,
               layer,
             )
             break
@@ -303,14 +322,15 @@ const radius: RuleDefinition = {
     }
   },
   name: 'ds/radius',
-  title: `Radiuses should match defined token values. (${RELEASE})`,
-  description: desc,
+  title: `Radiuses should match defined token values ${RELEASE}`,
+  description: `Reports a violation if a radius is different than: \r\n${radiusValues.join(
+    '\r\n',
+  )}`,
 }
 
 const textColor: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    const textColorValues = parseColors(getTextColors())
 
     for (const layer of utils.objects.text) {
       let colorAttribute =
@@ -320,23 +340,25 @@ const textColor: RuleDefinition = {
         const textRgba = getRgba(colorAttribute)
 
         // check for token match or transparency
-        if (textRgba[3] !== 0 && !textColorValues.find((v) => _.isEqual(v, textRgba)))
+        if (textRgba[3] !== 0 && !parseColors(textColorValues).find((v) => _.isEqual(v, textRgba)))
           utils.report(
-            `rgba(${textRgba[0]},${textRgba[1]},${textRgba[2]},${textRgba[3]}) does not match a valid text or generic color token.`,
+            `rgba(${textRgba[0]},${textRgba[1]},${textRgba[2]},${textRgba[3]}) does not match a valid text or generic color token`,
             layer,
           )
       }
     }
   },
   name: 'ds/text-color',
-  title: `Text colors should match text or generic color token values. (${RELEASE})`,
-  description: desc,
+  title: `Text colors should match text or generic color token values ${RELEASE}`,
+  description: `Reports a violation if a text color is different than: \r\n${textColorValues.join(
+    '\r\n',
+  )}`,
 }
 
 const textDisallow: RuleDefinition = {
   rule: async (context) => {
     const { utils } = context
-    
+
     const patterns = utils.getOption('pattern')
     if (!Array.isArray(patterns)) throw Error()
 
@@ -350,7 +372,7 @@ const textDisallow: RuleDefinition = {
   },
   name: 'netural-guidelines-assistant/text-disallow',
   title: (config) => `Text should not contain ${config.pattern}`,
-  description: (config) => `Reports a violation when text layers contain ${config.pattern}`,
+  description: (config) => `Reports a violation if a text layer contains '${config.pattern}'`,
 }
 
 const namePatternTextStyle: RuleDefinition = {
@@ -364,13 +386,13 @@ const namePatternTextStyle: RuleDefinition = {
     for (const textStyles of utils.objects.sharedTextStyleContainer) {
       for (const textStyle of textStyles.objects) {
         if (!re.test(textStyle.name))
-          utils.report(`Shared style “${textStyle.name}” should follow the conventions.`)
+          utils.report(`Shared text style “${textStyle.name}” should follow the conventions`)
       }
     }
   },
   name: 'netural-guidelines-assistant/name-pattern-text-style',
-  title: 'Name Pattern Text Style',
-  description: 'Reports a violation if a text style not named according to the definition.',
+  title: 'Shared text styles should follow the naming conventions',
+  description: 'Reports a violation if a shared text style is named differently than defined',
 }
 
 /*
@@ -385,14 +407,30 @@ const namePatternFile: RuleDefinition = {
   },
   name: 'netural-guidelines-assistant/name-pattern-file',
   title: 'Name Pattern Sketch File',
-  description: 'Reports a violation if the sketch file is not named according to the definition.',
+  description: 'Reports a violation if the sketch file is named differently than defined.',
 }
 */
 
-const assistant: AssistantPackage = [ CoreAssistant, async () => {
+const assistant: AssistantPackage = [
+  CoreAssistant,
+  async () => {
     return {
       name: 'netural-guidelines-assistant',
-      rules: [radius, opacity, shadow, fillColor, borderColor, borderSize, textColor, textSize, textFont, textLineHeight, /*namePatternFile,*/ namePatternTextStyle, textDisallow],
+      rules: [
+        radius,
+        opacity,
+        shadow,
+        fillColor,
+        borderColor,
+        borderSize,
+        textColor,
+        textSize,
+        textFont,
+        /*namePatternFile,*/
+        textLineHeight,
+        namePatternTextStyle,
+        textDisallow,
+      ],
       config: {
         rules: {
           'ds/radius': { active: true },
@@ -400,13 +438,13 @@ const assistant: AssistantPackage = [ CoreAssistant, async () => {
           'ds/opacity': { active: true },
 
           'ds/shadow': { active: true },
-          
+
           'ds/fill-color': { active: true },
 
           'ds/border-color': { active: true },
 
           'ds/border-size': { active: true },
-          
+
           'ds/text-color': { active: true },
 
           'ds/text-size': { active: true },
@@ -415,12 +453,6 @@ const assistant: AssistantPackage = [ CoreAssistant, async () => {
 
           'ds/lineheight': { active: true },
 
-          'netural-guidelines-assistant/text-disallow': {
-            active: true,
-            //patterns in lowercase, will be checked case insensitive
-            pattern: ['lorem ipsum'],
-          },
-
           /*
           'netural-guidelines-assistant/name-pattern-file': {
             active: true,
@@ -428,12 +460,19 @@ const assistant: AssistantPackage = [ CoreAssistant, async () => {
           },
           */
 
+          'netural-guidelines-assistant/text-disallow': {
+            active: true,
+            //patterns in lowercase, will be checked case insensitive
+            pattern: ['lorem ipsum'],
+          },
+
           //starts with three numbers
           //continues with a dash and at least one other character that is not _ or capital letter
           '@sketch-hq/sketch-core-assistant/name-pattern-artboards': {
             active: true,
             allowed: ['^[0-9]{3}-[^_^A-Z]*$'],
             forbidden: [],
+            ruleTitle: 'Artboard names should follow the naming conventions',
           },
 
           //starts with one of the following: a/ m/ o/ c/
@@ -442,6 +481,7 @@ const assistant: AssistantPackage = [ CoreAssistant, async () => {
             active: true,
             allowed: ['^(a/|m/|o/|c/)[^_^A-Z]*$'],
             forbidden: [],
+            ruleTitle: 'Symbol names should follow the naming conventions',
           },
 
           //starts with d- (desktop) or m- (mobile)
