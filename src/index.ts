@@ -3,7 +3,7 @@ import { AssistantPackage, RuleDefinition, RuleUtils } from '@sketch-hq/sketch-a
 import _ from 'lodash'
 
 import {
-  getBackgroundColors,
+  getFillColors,
   getBorderColors,
   getTextColors,
   getFontSizes,
@@ -58,7 +58,7 @@ const fontLineHeightValues = getLineHeights()
 const fontSizeValues = getFontSizes()
 const borderColorValues = getBorderColors()
 const borderSizeValues = getBorderSizes()
-const backgroundColorValues = getBackgroundColors()
+const fillColorValues = getFillColors()
 const shadowValues = getShadows()
 const opacityValues = getOpacities()
 const radiusValues = getRadiuses()
@@ -202,7 +202,7 @@ const fillColor: RuleDefinition = {
           if (
             fill.isEnabled &&
             fillRgba[3] !== 0 &&
-            !parseColors(backgroundColorValues).find((v) => _.isEqual(v, fillRgba))
+            !parseColors(fillColorValues).find((v) => _.isEqual(v, fillRgba))
           )
             utils.report(
               `rgba(${fillRgba}) does not match a valid background or generic color token`,
@@ -214,7 +214,7 @@ const fillColor: RuleDefinition = {
   },
   name: 'ds/fill-color',
   title: `Fill colors should match background or generic color token values ${RELEASE}`,
-  description: `Reports a violation if a fill color is different than: \r\n${backgroundColorValues.join(
+  description: `Reports a violation if a fill color is different than: \r\n${fillColorValues.join(
     '\r\n',
   )}`,
 }

@@ -1,7 +1,7 @@
 {
   "name": "netural-guidelines-assistant",
   "homepage": "https://github.com/fireinureeyes/netural-guidelines-assistant",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "sketch": "dist/sketch.js",
   "license": "MIT",
@@ -19,7 +19,9 @@
     "sketch assistant",
     "public",
     "assistant",
-    "design ops"
+    "design ops",
+    "guidelines",
+    "organization"
   ],
   "files": [
     "dist"

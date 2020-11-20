@@ -3,7 +3,7 @@
     {
       "value": "rgb(1,1,1)",
       "type": "color",
-      "category": "background-color"
+      "category": "fill-color"
     },
     {
       "value": "rgb(3,3,3)",
