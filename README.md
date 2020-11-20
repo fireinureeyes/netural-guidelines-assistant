@@ -17,7 +17,7 @@ First time using a Sketch Assistant?
 
 [👉 Confluence page containing the current guideline definitions](https://netural.atlassian.net/wiki/spaces/UX/pages/1419608224/Sketch+File+Aufbau+-+Guidlines)
 
-## [👉 Current master template sketch file on Plant](https://projects.plantapp.io/p/42589)
+[👉 Current master template sketch file on Plant](https://projects.plantapp.io/p/42589)
 
 ## Linting rules
 
