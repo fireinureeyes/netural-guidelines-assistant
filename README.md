@@ -11,11 +11,13 @@
 First time using a Sketch Assistant?
 [🤔 How can I add assistant to my sketch file?](https://www.sketch.com/docs/assistants/#adding-an-assistant-from-a-url-or-file)
 
-## Download
+## Links
 
 [👉 Download this Assistant](https://registry.npmjs.org/netural-guidelines-assistant/-/netural-guidelines-assistant-1.0.1.tgz)
 
----
+[👉 Confluence page containing the current guideline definitions](https://netural.atlassian.net/wiki/spaces/UX/pages/1419608224/Sketch+File+Aufbau+-+Guidlines)
+
+## [👉 Current master template sketch file on Plant](https://projects.plantapp.io/p/42589)
 
 ## Linting rules
 
@@ -128,11 +130,3 @@ Names of shared text styles should follow the naming conventions.
 Texts should not contain defined phrases.
 
 - Reports a violation if a text contains any of the defined phrases.
-
----
-
-## Related links
-
-[👉 Confluence page containing the current guideline definitions](https://netural.atlassian.net/wiki/spaces/UX/pages/1419608224/Sketch+File+Aufbau+-+Guidlines)
-
-[👉 Current master template sketch file on Plant](https://projects.plantapp.io/p/42589)
