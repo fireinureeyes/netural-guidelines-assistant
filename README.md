@@ -13,7 +13,7 @@ First time using a Sketch Assistant?
 
 ## Links
 
-[👉 Download this Assistant](https://registry.npmjs.org/netural-guidelines-assistant/-/netural-guidelines-assistant-1.0.1.tgz)
+[👉 Download this Assistant](https://registry.npmjs.org/netural-guidelines-assistant/-/netural-guidelines-assistant-1.0.2.tgz)
 
 [👉 Confluence page containing the current guideline definitions](https://netural.atlassian.net/wiki/spaces/UX/pages/1419608224/Sketch+File+Aufbau+-+Guidlines)
 
