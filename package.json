@@ -1,7 +1,7 @@
 {
   "name": "netural-guidelines-assistant",
   "homepage": "https://github.com/fireinureeyes/netural-guidelines-assistant",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "sketch": "dist/sketch.js",
   "license": "MIT",
@@ -12,6 +12,10 @@
   },
   "author": {
     "name": "Netural"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fireinureeyes/netural-guidelines-assistant.git"
   },
   "keywords": [
     "sketch",
@@ -46,10 +50,12 @@
     "webpack-cli": "3.3.12"
   },
   "dependencies": {
+    "@fireinureeyes/json": "fireinureeyes/json.git",
     "@sketch-hq/sketch-assistant-types": "^6.0.0",
     "@sketch-hq/sketch-core-assistant": "^6.1.0",
     "@sketch-hq/sketch-file-format": "^3.6.7",
     "@types/lodash": "^4.14.162",
     "lightning-design-system-linter": "^1.0.5",
-    "lodash": "^4.17.20"  }
+    "lodash": "^4.17.20"
+  }
 }

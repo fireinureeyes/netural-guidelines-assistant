@@ -13,13 +13,9 @@ First time using a Sketch Assistant?
 
 ## Links
 
-[👉 Download this Assistant](https://registry.npmjs.org/netural-guidelines-assistant/-/netural-guidelines-assistant-1.0.2.tgz)
-
 [👉 Netural.com](https://www.netural.com)
 
-[👉 Confluence page containing the current guideline definitions](https://netural.atlassian.net/wiki/spaces/UX/pages/1419608224/Sketch+File+Aufbau+-+Guidlines)
-
-[👉 Current master template sketch file on Plant](https://projects.plantapp.io/p/42589)
+[👉 Download this Assistant](https://registry.npmjs.org/netural-guidelines-assistant/-/netural-guidelines-assistant-1.0.3.tgz)
 
 ## Linting rules
 

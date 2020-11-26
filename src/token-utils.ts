@@ -1,4 +1,5 @@
-import * as primitiveTokens from './design-tokens/primitive.json'
+//import * as primitiveTokens from './design-tokens/primitive.json'
+import * as primitiveTokens from '@fireinureeyes/json'
 
 //returns an array of allowed generic colors (category "color") from json file
 const getGenericColors = () =>
