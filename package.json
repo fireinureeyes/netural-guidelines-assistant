@@ -56,6 +56,6 @@
     "@sketch-hq/sketch-file-format": "^3.6.7",
     "@types/lodash": "^4.14.162",
     "lightning-design-system-linter": "^1.0.5",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   }
 }
